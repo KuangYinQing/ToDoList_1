@@ -1,4 +1,3 @@
-import exp from "constants";
 import React, { createContext, useContext, useState } from "react";
 export interface dataProps {
   // 传递的数据，输入之后添加然后传到item中
@@ -10,6 +9,7 @@ export interface ContextProps {
   todolist: dataProps[];
   changeTodo: (id: number) => void;
   addTodo: (todo: dataProps) => void;
+  deleteTodo: (id: number) => void;
 }
 
 export const MyContext = createContext({} as ContextProps); //断言成contextprops结构
@@ -33,8 +33,13 @@ const MyProvider = (props: React.PropsWithChildren<{}>) => {
   const addTodo = (todo: dataProps) => {
     setTodolist([...todolist, todo]);
   };
+  const deleteTodo = (id: number) => {
+    const newtodolist = todolist.filter((todolist) => todolist.id !== id);
+    //删除列表中对应id的项
+    setTodolist(newtodolist);
+  };
   return (
-    <MyContext.Provider value={{ todolist, changeTodo, addTodo }}>
+    <MyContext.Provider value={{ todolist, changeTodo, addTodo, deleteTodo }}>
       {/* 需要传递的数据是todolist以及修改todolist的两个方法 */}
       {props.children}
       {/* 组件中间的代码引入 */}

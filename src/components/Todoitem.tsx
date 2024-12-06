@@ -9,12 +9,15 @@ interface IProps {
   todo: dataProps;
 }
 const Todoitem = ({ todo }: IProps) => {
-  const { changeTodo } = useContext(MyContext);
+  const { changeTodo, deleteTodo } = useContext(MyContext);
   const changeHandler = () => {
     changeTodo(todo.id);
   };
   const spanstyle = {
     textDecoration: todo.isFinished ? "line-through" : "none",
+  };
+  const deleteHandler = () => {
+    deleteTodo(todo.id);
   };
   return (
     <div className="Todoitem" style={itemStyle}>
@@ -24,6 +27,7 @@ const Todoitem = ({ todo }: IProps) => {
         onChange={changeHandler}
       />
       <span style={spanstyle}>{todo.text}</span>
+      <button onClick={deleteHandler}>删除</button>
     </div>
   );
 };
