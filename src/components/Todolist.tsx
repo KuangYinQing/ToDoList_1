@@ -3,7 +3,7 @@ import Todoitem from "./Todoitem";
 import { MyContext } from "./MyProvider";
 // 设置样式
 const listStyle = {
-  marginTop: "20px",
+  marginTop: "10px",
 };
 const Todolist = () => {
   const { todolist } = useContext(MyContext)!;

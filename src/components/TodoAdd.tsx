@@ -27,9 +27,13 @@ const TodoAdd = () => {
 
   return (
     // 返回一个输入框，一个按钮
-    <div className="TodoAdd">
+    <div
+      className="TodoAdd"
+      style={{ display: "flex", justifyContent: "center" }}
+    >
       <input
         type="text"
+        style={{ width: "60%", marginRight: "10px" }}
         placeholder="请输入待办事项"
         onChange={changeTextHandler} //输入框内值改变就调用
         value={text}
