@@ -1,13 +1,16 @@
 import React, { useContext } from "react";
 import Todoitem from "./Todoitem";
-import { MyContext } from "./MyProvider";
+import { useSelector } from "react-redux";
+import { rootState } from "../store/reducer";
+//import { MyContext } from "./MyProvider";
 // 设置样式
 const listStyle = {
   marginTop: "10px",
 };
 const Todolist = () => {
-  const { todolist } = useContext(MyContext)!;
-  const todolistdom = todolist.map((item) => (
+  const state = useSelector((state: rootState) => state);
+
+  const todolistdom = state.map((item) => (
     <Todoitem key={item.id} todo={item} />
   ));
   return (
@@ -16,4 +19,5 @@ const Todolist = () => {
     </div>
   );
 };
+
 export default Todolist;

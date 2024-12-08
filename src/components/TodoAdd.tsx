@@ -1,13 +1,14 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 // import { dataProps } from "./MyProvider";
-import { MyContext } from "./MyProvider";
+import { useDispatch } from "react-redux";
+import { addAction } from "../store/action";
 // interface IProps {
 //    addTodo: (todo: dataProps) => void; //传递一个函数，函数的参数是数据项
 // }
 
 const TodoAdd = () => {
   const [text, setText] = useState("");
-  const { addTodo } = useContext(MyContext)!;
+  const dispatch = useDispatch();
   //const mycontext = useContext(MyContext);
   const changeTextHandler = (e: React.ChangeEvent) => {
     setText((e.target as HTMLInputElement)!.value);
@@ -15,12 +16,13 @@ const TodoAdd = () => {
 
   const addTodoHandler = () => {
     if (text) {
-      //终于让我找到你了，约束条件！！！！！！
-      addTodo({
-        id: new Date().getTime(), //时间戳
-        text: text,
-        isFinished: false,
-      });
+      dispatch(
+        addAction({
+          id: new Date().getTime(),
+          text: text,
+          isFinished: false,
+        })
+      );
       setText("");
     }
   };
