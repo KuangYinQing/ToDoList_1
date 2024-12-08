@@ -6,7 +6,7 @@ const listStyle = {
   marginTop: "20px",
 };
 const Todolist = () => {
-  const { todolist } = useContext(MyContext);
+  const { todolist } = useContext(MyContext)!;
   const todolistdom = todolist.map((item) => (
     <Todoitem key={item.id} todo={item} />
   ));

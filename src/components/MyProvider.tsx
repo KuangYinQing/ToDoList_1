@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 export interface dataProps {
   // 传递的数据，输入之后添加然后传到item中
   id: number;
@@ -12,11 +12,47 @@ export interface ContextProps {
   deleteTodo: (id: number) => void;
 }
 
-export const MyContext = createContext({} as ContextProps); //断言成contextprops结构
+//export const MyContext = createContext({} as ContextProps); //断言成contextprops结构
+export const MyContext = createContext<ContextProps | undefined>(undefined); // 使用undefined作为初始值，并在使用时进行非空断言
 
 const MyProvider = (props: React.PropsWithChildren<{}>) => {
   // 使用props传递数据，要定义类型，propswithchildren是一个泛型，需注明
   const [todolist, setTodolist] = useState<dataProps[]>([]); //最初为空数组，结构不清楚，所以需要用泛型来说明数组结构
+  let savedTodos: dataProps[] | [];
+  //最开始两个useEffect顺序错误，导致先用了下面那个useeffect给storedTodolist赋值，然后setItem方法把本地缓存清空了
+  //修改顺序之后，控制台显示能获取刷新前网页的数据，但是又被下面的useEffect清空了，所以可能是之前保存的数据又被下面的useeffect清空了
+  //所以用第二个把savedTodos也保存下来，网页数据就能保存了，就要把savedTodo放到useEffect外面定义，不过使用const定义的是常量，不能重新赋值
+  //所以使用let定义，但是问题是浏览器会报出catch的错误，那就删掉catch
+  //删了之后没有输入就页面整体报错，不删了，让它别显示就行了
+  useEffect(() => {
+    // 从Local Storage加载数据,
+    try {
+      savedTodos =
+        (JSON.parse(localStorage.getItem("todolist")!) as dataProps[]) || [];
+      if (savedTodos) {
+        setTodolist(savedTodos);
+      } else {
+        setTodolist([]);
+      }
+      console.log(savedTodos);
+    } catch (error) {
+      //console.error("Error loading todos from Local Storage:", error);
+    }
+  }, []);
+  useEffect(() => {
+    // 在组件卸载或更新前保存数据到Local Storage
+    if (savedTodos) {
+      const storetodolist =
+        JSON.stringify(savedTodos) + JSON.stringify(todolist);
+      localStorage.setItem("todolist", storetodolist);
+      console.log(storetodolist);
+    } else {
+      const storetodolist = JSON.stringify(todolist);
+      localStorage.setItem("todolist", storetodolist);
+      console.log(storetodolist);
+    }
+  }, [todolist]); // 依赖todolist数组，每当todolist变化时都会触发保存
+
   // 修改当前todolist中item的状态
   const changeTodo = (id: number) => {
     const newTodolist = todolist.map((item) => {

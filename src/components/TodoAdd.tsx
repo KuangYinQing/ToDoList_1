@@ -7,7 +7,7 @@ import { MyContext } from "./MyProvider";
 
 const TodoAdd = () => {
   const [text, setText] = useState("");
-  const { addTodo } = useContext(MyContext);
+  const { addTodo } = useContext(MyContext)!;
   //const mycontext = useContext(MyContext);
   const changeTextHandler = (e: React.ChangeEvent) => {
     setText((e.target as HTMLInputElement)!.value);

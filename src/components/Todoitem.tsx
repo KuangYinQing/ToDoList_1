@@ -9,7 +9,7 @@ interface IProps {
   todo: dataProps;
 }
 const Todoitem = ({ todo }: IProps) => {
-  const { changeTodo, deleteTodo } = useContext(MyContext);
+  const { changeTodo, deleteTodo } = useContext(MyContext)!;
   const changeHandler = () => {
     changeTodo(todo.id);
   };
