@@ -26,9 +26,12 @@ export const reducer = (state: dataProps[] = [], action: actionProps) => {
       });
     case type.DELETE:
       return state.filter((state) => state.id !== action.id);
+    case type.SET:
+      return [...state, ...action.todo];
     default:
       return state;
   }
 };
 export type rootState = ReturnType<typeof reducer>;
+
 export default reducer;

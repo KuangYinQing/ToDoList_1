@@ -13,3 +13,7 @@ export const changeAction = (id: number) => ({
   type: type.CHANGE,
   id,
 });
+export const setTodolist = (todo: dataProps[]) => ({
+  type: type.SET,
+  todo,
+});
